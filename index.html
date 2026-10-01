@@ -163,10 +163,9 @@
           <div class="hero-visual">
             <div class="hero-identity-card">
               <div class="identity-card-header">
-                <img src="assets/images/logo/hackventure-2026-logo-header.png" alt="Official HACKVENTURE 2026 logo"
-                  class="identity-logo">
+
                 <div class="identity-title-group">
-                  <h2 class="identity-event-name">HACKVENTURE 3.0</h2>
+                  <h2 class="identity-event-name"> HACKVENTURE 3.0</h2>
                   <span class="identity-event-tag">Bridging Bytes & Badges</span>
                 </div>
               </div>
@@ -542,7 +541,11 @@
               </p>
             </div>
             <div class="challenge-footer">
-              <span class="challenge-meta">Software Development Sprint</span>
+
+              <button type="button" class="challenge-rules-btn" data-rules-target="software-development"
+                aria-haspopup="dialog" aria-controls="modal-event-rules">
+                Rules &amp; Guidelines
+              </button>
               <div class="challenge-actions">
                 <button type="button" class="btn-event btn-event-primary" data-event-modal="modal-event-day1"
                   aria-haspopup="dialog" aria-controls="modal-event-day1">
@@ -574,14 +577,16 @@
               </p>
             </div>
             <div class="challenge-footer">
-              <span class="challenge-meta">Idea Pitching &amp; Presentation</span>
+
+              <button type="button" class="challenge-rules-btn" data-rules-target="idea-pitching" aria-haspopup="dialog"
+                aria-controls="modal-event-rules">
+                Rules &amp; Guidelines
+              </button>
               <div class="challenge-actions">
                 <button type="button" class="btn-event btn-event-primary" data-event-modal="modal-event-day2"
                   aria-haspopup="dialog" aria-controls="modal-event-day2">
                   Check Out More
                 </button>
-
-                </a>
               </div>
             </div>
           </div>
@@ -606,14 +611,16 @@
               </p>
             </div>
             <div class="challenge-footer">
-              <span class="challenge-meta">Domain Awareness Quiz</span>
+
+              <button type="button" class="challenge-rules-btn" data-rules-target="quiz" aria-haspopup="dialog"
+                aria-controls="modal-event-rules">
+                Rules &amp; Guidelines
+              </button>
               <div class="challenge-actions">
                 <button type="button" class="btn-event btn-event-primary" data-event-modal="modal-event-day3"
                   aria-haspopup="dialog" aria-controls="modal-event-day3">
                   Check Out More
                 </button>
-
-                </a>
               </div>
             </div>
           </div>
@@ -977,6 +984,47 @@
             <button type="button" class="btn btn-secondary btn-sm modal-close-btn">Close</button>
           </div>
         </div>
+      </div>
+
+      <!-- ======================================================================
+           EVENT RULES & GUIDELINES MODAL (REUSABLE POPUP)
+           ====================================================================== -->
+      <div class="rules-modal-overlay" id="modal-event-rules" role="dialog" aria-modal="true"
+        aria-labelledby="rules-modal-title" tabindex="-1">
+        <div class="rules-modal-box">
+          <!-- Fixed Header -->
+          <div class="rules-modal-header">
+            <div class="rules-modal-header-meta">
+              <span class="rules-modal-badge" id="rules-modal-badge">DAY 1 • 28 OCT 2026</span>
+              <h3 class="rules-modal-title" id="rules-modal-title">Rules &amp; Guidelines</h3>
+            </div>
+            <button type="button" class="rules-modal-close-btn" aria-label="Close dialog">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Internal Scrollable Body -->
+          <div class="rules-modal-body">
+            <div class="rules-modal-event-intro">
+              <h4 class="rules-modal-event-name" id="rules-modal-event-name">Software Development</h4>
+              <p class="rules-modal-event-desc" id="rules-modal-event-desc">Software Development Sprint &amp; AI
+                Analytics</p>
+            </div>
+            <div class="rules-modal-items" id="rules-modal-list">
+              <!-- Dynamically populated from rules data -->
+            </div>
+          </div>
+
+          <!-- Fixed Footer -->
+          <div class="rules-modal-footer">
+            <button type="button" class="rules-modal-footer-btn rules-modal-close-btn">Close</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ==========================================================================
@@ -1505,7 +1553,7 @@
           <h3 class="prize-pool-title">A Grand Prize Pool of ₹1 Lakh</h3>
           <div class="prize-pool-amount-wrapper">
             <span class="prize-pool-currency">₹</span>
-            <span class="prize-pool-amount">1,00,000</span>
+            <span class="prize-pool-amount">1,00,000/-</span>
           </div>
 
         </div>
@@ -1520,17 +1568,17 @@
               <div class="prize-tier prize-tier-1">
                 <span class="prize-tier-rank"><span class="prize-tier-rank-badge prize-rank-1">1</span>First
                   Place</span>
-                <span class="prize-tier-amount">25000/-</span>
+                <span class="prize-tier-amount">₹25,000/-</span>
               </div>
               <div class="prize-tier prize-tier-2">
                 <span class="prize-tier-rank"><span class="prize-tier-rank-badge prize-rank-2">2</span>Second
                   Place</span>
-                <span class="prize-tier-amount">15000/-</span>
+                <span class="prize-tier-amount">₹15,000/-</span>
               </div>
               <div class="prize-tier prize-tier-3">
                 <span class="prize-tier-rank"><span class="prize-tier-rank-badge prize-rank-3">3</span>Third
                   Place</span>
-                <span class="prize-tier-amount">10000/-</span>
+                <span class="prize-tier-amount">₹10,000/-</span>
               </div>
             </div>
           </div>
@@ -1544,17 +1592,17 @@
               <div class="prize-tier prize-tier-1">
                 <span class="prize-tier-rank"><span class="prize-tier-rank-badge prize-rank-1">1</span>First
                   Place</span>
-                <span class="prize-tier-amount">15000/-</span>
+                <span class="prize-tier-amount">₹15,000/-</span>
               </div>
               <div class="prize-tier prize-tier-2">
                 <span class="prize-tier-rank"><span class="prize-tier-rank-badge prize-rank-2">2</span>Second
                   Place</span>
-                <span class="prize-tier-amount">10000/-</span>
+                <span class="prize-tier-amount">₹10,000/-</span>
               </div>
               <div class="prize-tier prize-tier-3">
                 <span class="prize-tier-rank"><span class="prize-tier-rank-badge prize-rank-3">3</span>Third
                   Place</span>
-                <span class="prize-tier-amount">5000/-</span>
+                <span class="prize-tier-amount">₹5,000/-</span>
               </div>
             </div>
           </div>
@@ -1568,17 +1616,17 @@
               <div class="prize-tier prize-tier-1">
                 <span class="prize-tier-rank"><span class="prize-tier-rank-badge prize-rank-1">1</span>First
                   Place</span>
-                <span class="prize-tier-amount">10000/-</span>
+                <span class="prize-tier-amount">₹10,000/-</span>
               </div>
               <div class="prize-tier prize-tier-2">
                 <span class="prize-tier-rank"><span class="prize-tier-rank-badge prize-rank-2">2</span>Second
                   Place</span>
-                <span class="prize-tier-amount">5000/-</span>
+                <span class="prize-tier-amount">₹5,000/-</span>
               </div>
               <div class="prize-tier prize-tier-3">
                 <span class="prize-tier-rank"><span class="prize-tier-rank-badge prize-rank-3">3</span>Third
                   Place</span>
-                <span class="prize-tier-amount">3000/-</span>
+                <span class="prize-tier-amount">₹3,000/-</span>
               </div>
             </div>
           </div>
@@ -1921,8 +1969,8 @@
           <span class="cta-eyebrow">HACKVENTURE 3.0 </span>
           <h2 class="cta-title">READY TO BUILD THE FUTURE?</h2>
           <p class="cta-desc">
-            Registration Starts: <strong>5 October 2026</strong> &bull; Registration Ends: <strong>23 October
-              2026</strong>.<br>
+            Registration Starts: <strong>5 October 2026.</strong> <br> Registration Ends: <strong>23 October
+              2026.</strong><br>
             Bring your ideas. Build with a team. Solve real problems. Click below to submit your application on the
             official registration form.
           </p>

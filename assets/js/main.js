@@ -573,35 +573,18 @@
     const eventModals = document.querySelectorAll(".event-modal-overlay");
     let lastActiveEventTrigger = null;
 
-    // Ensure event modals are direct children of body for safe viewport-fixed positioning
-    eventModals.forEach((m) => {
-      if (m.parentElement !== document.body) {
-        document.body.appendChild(m);
-      }
-    });
-
     function openEventModal(modalId, triggerEl) {
       const target = document.getElementById(modalId);
       if (!target) return;
       lastActiveEventTrigger = triggerEl || null;
-
-      // Reset scroll position to top whenever opening
-      const modalBody = target.querySelector(".event-modal-body");
-      if (modalBody) {
-        modalBody.scrollTop = 0;
-      }
-
       target.classList.add("open");
-      document.body.classList.add("modal-open");
       document.body.style.overflow = "hidden";
-
-      const closeBtn = target.querySelector(".event-modal-close-btn") || target.querySelector(".modal-close-btn");
+      const closeBtn = target.querySelector(".modal-close-btn");
       if (closeBtn) closeBtn.focus();
     }
 
     function closeEventModals() {
       eventModals.forEach((m) => m.classList.remove("open"));
-      document.body.classList.remove("modal-open");
       document.body.style.overflow = "";
       if (lastActiveEventTrigger) {
         lastActiveEventTrigger.focus();
@@ -631,22 +614,250 @@
         });
       });
 
-      // Close when clicking the backdrop
       m.addEventListener("click", (e) => {
         if (e.target === m) closeEventModals();
       });
-
-      // Prevent backdrop touch scrolling from leaking to the page
-      m.addEventListener("touchmove", (e) => {
-        if (e.target === m) {
-          e.preventDefault();
-        }
-      }, { passive: false });
     });
 
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeEventModals();
+      }
+    });
+
+    /* --------------------------------------------------------------------------
+       5E. EVENT RULES & GUIDELINES REUSABLE MODAL
+       -------------------------------------------------------------------------- */
+    const EVENT_RULES_DATA = {
+      "software-development": {
+        badge: "DAY 1 • 28 OCT 2026",
+        eventName: "Software Development",
+        subtitle: "Software Development Sprint & AI Analytics",
+        rules: [
+          {
+            title: "Unique Solution",
+            desc: "Build an original and meaningful software solution that addresses the challenge."
+          },
+          {
+            title: "No Copy-Paste",
+            desc: "Do not copy-paste an existing project and submit it as your own."
+          },
+          {
+            title: "Plagiarism Check",
+            desc: "Plagiarism and substantially copied source code are strictly prohibited. Projects may be checked for duplicated implementations."
+          },
+          {
+            title: "Third-Party Resources",
+            desc: "Existing libraries, frameworks, APIs, and open-source tools may be used where appropriate."
+          },
+          {
+            title: "AI & Development Tools",
+            desc: "AI development tools may be used, but participants must understand and be able to explain their submitted work."
+          },
+          {
+            title: "Original Contribution",
+            desc: "The project should demonstrate meaningful contribution from the participant/team."
+          },
+          {
+            title: "No Malicious Code",
+            desc: "Do not include malware, unauthorized access, credential theft, or other malicious functionality."
+          },
+          {
+            title: "Final Submission",
+            desc: "Submit the complete project before the official deadline."
+          },
+          {
+            title: "Disqualification",
+            desc: "Projects violating any of the rules may be disqualified by the judges."
+          }
+        ]
+      },
+      "idea-pitching": {
+        badge: "DAY 2 • 29 OCT 2026",
+        eventName: "Idea Pitching",
+        subtitle: "Strategic Innovation Concepts & Presentation",
+        rules: [
+          {
+            title: "Original Idea",
+            desc: "Present your own original concept and novel thinking."
+          },
+          {
+            title: "Problem Definition",
+            desc: "Clearly explain the real-world problem you are addressing."
+          },
+          {
+            title: "Proposed Solution",
+            desc: "Explain your proposed solution and how effectively it addresses the problem."
+          },
+          {
+            title: "Target Users",
+            desc: "Clearly describe the target users, law-enforcement beneficiaries, or community."
+          },
+          {
+            title: "Innovation",
+            desc: "Explain what makes your idea different, practical, or innovative."
+          },
+          {
+            title: "No Copied Ideas / Pitches",
+            desc: "Do not copy another participant's idea or existing pitch and present it as your own."
+          },
+          {
+            title: "Plagiarism",
+            desc: "Plagiarism and copied presentations/content are strictly prohibited."
+          },
+          {
+            title: "Research & References",
+            desc: "You may use research and references, but acknowledge external sources where appropriate."
+          },
+          {
+            title: "Presentation",
+            desc: "Keep the pitch clear, concise, well-structured, and relevant to the challenge."
+          },
+          {
+            title: "Judge Questions",
+            desc: "Be prepared to answer questions and defend architectural choices before the jury."
+          },
+          {
+            title: "Disqualification",
+            desc: "Misrepresentation or plagiarism may result in immediate disqualification."
+          }
+        ]
+      },
+      "quiz": {
+        badge: "DAY 3 • 30 OCT 2026",
+        eventName: "Quiz",
+        subtitle: "Cybersecurity, Public Safety Laws & Digital Forensics",
+        rules: [
+          {
+            title: "Individual Participation",
+            desc: "The quiz must be completed exclusively by the registered participant."
+          },
+          {
+            title: "No Unauthorized Assistance",
+            desc: "Do not use unauthorized assistance, external guides, or communicate answers with other participants."
+          },
+          {
+            title: "No Copying Answers",
+            desc: "Do not copy answers or share screen views with another participant."
+          },
+          {
+            title: "No System Manipulation",
+            desc: "Do not attempt to manipulate, bypass, or exploit the quiz platform or timing system."
+          },
+          {
+            title: "Time Limits",
+            desc: "Answer each question within the specified time limit, if applicable."
+          },
+          {
+            title: "Follow Quiz Instructions",
+            desc: "Follow all operational instructions and guidelines displayed during the quiz."
+          },
+          {
+            title: "No Cheating",
+            desc: "Any attempt to cheat, manipulate results, or gain an unfair advantage may result in disqualification."
+          },
+          {
+            title: "Report Technical Issues",
+            desc: "Technical issues should be reported to the event coordinators as soon as possible."
+          },
+          {
+            title: "Organizer Rules",
+            desc: "The organizer's decision regarding rule violations and score tabulation will apply."
+          }
+        ]
+      }
+    };
+
+    const rulesModal = document.getElementById("modal-event-rules");
+    const rulesTriggers = document.querySelectorAll("[data-rules-target]");
+    let lastActiveRulesTrigger = null;
+
+    function openRulesModal(targetKey, triggerEl) {
+      if (!rulesModal) return;
+      const data = EVENT_RULES_DATA[targetKey];
+      if (!data) return;
+
+      lastActiveRulesTrigger = triggerEl || null;
+
+      const badgeEl = rulesModal.querySelector("#rules-modal-badge");
+      const eventNameEl = rulesModal.querySelector("#rules-modal-event-name");
+      const eventDescEl = rulesModal.querySelector("#rules-modal-event-desc");
+      const listEl = rulesModal.querySelector("#rules-modal-list");
+
+      if (badgeEl) badgeEl.textContent = data.badge;
+      if (eventNameEl) eventNameEl.textContent = data.eventName;
+      if (eventDescEl) eventDescEl.textContent = data.subtitle;
+
+      if (listEl) {
+        listEl.innerHTML = "";
+        data.rules.forEach((rule, idx) => {
+          const card = document.createElement("div");
+          card.className = "rules-item-card";
+
+          const num = document.createElement("div");
+          num.className = "rules-item-num";
+          num.textContent = (idx + 1).toString();
+
+          const content = document.createElement("div");
+          content.className = "rules-item-content";
+
+          const heading = document.createElement("h5");
+          heading.className = "rules-item-heading";
+          heading.textContent = rule.title;
+
+          const desc = document.createElement("p");
+          desc.className = "rules-item-desc";
+          desc.textContent = rule.desc;
+
+          content.appendChild(heading);
+          content.appendChild(desc);
+
+          card.appendChild(num);
+          card.appendChild(content);
+
+          listEl.appendChild(card);
+        });
+      }
+
+      rulesModal.classList.add("open");
+      document.body.style.overflow = "hidden";
+
+      const closeBtn = rulesModal.querySelector(".rules-modal-close-btn");
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeRulesModal() {
+      if (!rulesModal || !rulesModal.classList.contains("open")) return;
+      rulesModal.classList.remove("open");
+      document.body.style.overflow = "";
+      if (lastActiveRulesTrigger) {
+        lastActiveRulesTrigger.focus();
+        lastActiveRulesTrigger = null;
+      }
+    }
+
+    rulesTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        const targetKey = trigger.getAttribute("data-rules-target");
+        if (targetKey) openRulesModal(targetKey, trigger);
+      });
+    });
+
+    if (rulesModal) {
+      const closeBtns = rulesModal.querySelectorAll(".rules-modal-close-btn");
+      closeBtns.forEach((btn) => {
+        btn.addEventListener("click", closeRulesModal);
+      });
+
+      rulesModal.addEventListener("click", (e) => {
+        if (e.target === rulesModal) closeRulesModal();
+      });
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && rulesModal && rulesModal.classList.contains("open")) {
+        closeRulesModal();
       }
     });
 
