@@ -562,39 +562,86 @@
     /* --------------------------------------------------------------------------
        5D. EVENT CARDS MODALS (CHECK OUT MORE & VIEW PROBLEM STATEMENTS)
        -------------------------------------------------------------------------- */
+    // Configurable problem statement destinations for each event
+    const EVENT_PROBLEM_STATEMENT_DESTINATIONS = {
+      day1: "#problem-statements",  // Common Problem Statements section
+      day2: "#problem-statements",  // Common Problem Statements section
+      day3: "#problem-statements"   // Common Problem Statements section
+    };
+
     const eventModalTriggers = document.querySelectorAll("[data-event-modal]");
     const eventModals = document.querySelectorAll(".event-modal-overlay");
+    let lastActiveEventTrigger = null;
 
-    function openEventModal(modalId) {
+    // Ensure event modals are direct children of body for safe viewport-fixed positioning
+    eventModals.forEach((m) => {
+      if (m.parentElement !== document.body) {
+        document.body.appendChild(m);
+      }
+    });
+
+    function openEventModal(modalId, triggerEl) {
       const target = document.getElementById(modalId);
       if (!target) return;
+      lastActiveEventTrigger = triggerEl || null;
+
+      // Reset scroll position to top whenever opening
+      const modalBody = target.querySelector(".event-modal-body");
+      if (modalBody) {
+        modalBody.scrollTop = 0;
+      }
+
       target.classList.add("open");
+      document.body.classList.add("modal-open");
       document.body.style.overflow = "hidden";
-      const closeBtn = target.querySelector(".modal-close-btn");
+
+      const closeBtn = target.querySelector(".event-modal-close-btn") || target.querySelector(".modal-close-btn");
       if (closeBtn) closeBtn.focus();
     }
 
     function closeEventModals() {
       eventModals.forEach((m) => m.classList.remove("open"));
+      document.body.classList.remove("modal-open");
       document.body.style.overflow = "";
+      if (lastActiveEventTrigger) {
+        lastActiveEventTrigger.focus();
+        lastActiveEventTrigger = null;
+      }
     }
 
     eventModalTriggers.forEach((trigger) => {
       trigger.addEventListener("click", (e) => {
         e.preventDefault();
         const targetId = trigger.getAttribute("data-event-modal");
-        if (targetId) openEventModal(targetId);
+        if (targetId) openEventModal(targetId, trigger);
       });
     });
 
     eventModals.forEach((m) => {
-      const closeBtn = m.querySelector(".modal-close-btn");
-      if (closeBtn) {
-        closeBtn.addEventListener("click", closeEventModals);
-      }
+      const closeButtons = m.querySelectorAll(".modal-close-btn");
+      closeButtons.forEach((btn) => {
+        btn.addEventListener("click", closeEventModals);
+      });
+
+      // Close modal when navigating via in-modal hash links
+      const modalLinks = m.querySelectorAll("a[href^='#']");
+      modalLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          closeEventModals();
+        });
+      });
+
+      // Close when clicking the backdrop
       m.addEventListener("click", (e) => {
         if (e.target === m) closeEventModals();
       });
+
+      // Prevent backdrop touch scrolling from leaking to the page
+      m.addEventListener("touchmove", (e) => {
+        if (e.target === m) {
+          e.preventDefault();
+        }
+      }, { passive: false });
     });
 
     window.addEventListener("keydown", (e) => {
