@@ -2203,16 +2203,11 @@ ol {
     margin-bottom: 10px;
   }
 
-  /* Description — tighter spacing */
+  /* Description — tighter spacing, no clamp so cards grow with content */
   .challenge-desc {
     font-size: 0.9rem;
     line-height: 1.55;
     margin-bottom: 16px;
-    /* 3-line clamp to keep cards from growing too tall */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   /* Footer */
@@ -2245,6 +2240,34 @@ ol {
   .challenge-card:active {
     transform: scale(0.99);
     box-shadow: 0 2px 10px rgba(7, 26, 74, 0.06);
+  }
+}
+
+/* ── Mid-mobile (481px–767px): single-column, comfortable spacing ── */
+@media (min-width: 481px) and (max-width: 767px) {
+  .challenges-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+
+  .challenge-card {
+    padding: 24px 22px 20px;
+  }
+
+  .challenge-actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 0;
+  }
+
+  .btn-event {
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 44px;
+    font-size: 0.875rem;
+    padding: 10px 16px;
   }
 }
 
@@ -2323,18 +2346,21 @@ ol {
   background-color: rgba(7, 26, 74, 0.68);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   z-index: 2050;
   opacity: 0;
-  transition: opacity 220ms ease;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms ease;
 }
 
 .event-modal-overlay.open {
-  display: flex;
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .event-modal-box {
